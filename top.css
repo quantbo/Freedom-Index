@@ -1,0 +1,79 @@
+/*top.css:
+Top level CSS.
+Link to this ahead of CSS relevant to a specific project.
+
+A NOTE ON THE FILENAME
+I originally named this file '_top.css'. If a filename begins with an underscore it is ignored by Jekyll, used by GitHub Pages. To avoid this and perhaps similar mishaps I renamed the file to 'top.css'.
+*/
+a {
+	color:blueviolet;
+	font-weight: normal;
+	text-decoration: none;
+}
+a:hover {
+	color: orange;
+}
+body {
+	width: 8.5in;
+	margin: 0 auto;
+}
+button {
+	border-radius: 4px;
+	font-size: 1.1em;
+	margin-bottom: 0.5em;
+	margin-top: -0.1em;
+	box-shadow: 0.1em 0.1em;
+}
+h1 {
+	border: solid rgba(0, 0, 128, 0.25);
+	border-width: 1px;
+	font-family: sans-serif;
+	font-weight: lighter;
+	padding: 0.25em;
+	text-align: center;
+}
+h2 {
+	font-family: sans-serif;
+	font-weight: 400;
+}
+ol {
+	font-size: 1.2em;
+}
+li {
+	margin-bottom: 0.5em;
+}
+li p {
+	font-size: inherit;
+}
+p {
+	font-size: 1.25em;
+}
+pre {
+	font-size: 1.2em;
+	font-weight: lighter;
+	margin-bottom: -1em;
+}
+/*Executive summary.*/
+.exec-summ {
+	margin-bottom: 0.5em;
+	margin-left: 1.5em;
+	margin-right: 1.5em;
+	margin-top: 0.5em;
+}
+/*A mathematical expression.*/
+.math {
+	background-color: rgba(0, 0, 255, 0.015);
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+	text-indent: 3em;
+}
+
+/* Publication related. */
+/*Place the copyright notice in a footer at the bottom of the page.*/
+#copyright {
+	font-style: italic;
+}
+/*Place a notice of the publication date after h1 and before the introductory paragraph.*/
+p#pub {
+	font-style: italic;
+}

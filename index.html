@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>The Freedom Index</title>
+	
+	<!-- Enable jQuery. The lines below are copied from
+	https://code.jquery.com/ -->
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+	
+	<!-- Enable ASCII Math. Copied from
+	http://docs.mathjax.org/en/latest/start.html -->
+	<!-- <script type="text/javascript" async
+	  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script> -->
+
+	<!-- Enable D3. -->
+	<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+	
+	<!--	Load CSS before JS; the latter may operate on the former.-->
+	<link rel="stylesheet" type="text/css" href="top.css">
+	<script src='index.js'></script>
+	<style>
+		div.img {
+			margin-top: -1em;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>The Freedom Index</h1>
+
+	<p id='pub'>Published: 2017-05-20</p>
+
+	<p class='exec-summ'>SUMMARY: Each year the Heritage Foundation releases an index of economic freedom. We plot the 2017 data, specifically the effect of economic freedom on GDP per capita. In order to check whether a trend really exists we subject the data to bootstrap analysis. The presence of a trend is confirmed.</p>
+	
+	<p>Each year the Heritage Foundation releases an index of economic freedom. The index, including commentaries and raw data, can be accessed <a href='http://www.heritage.org/index/download' target="_blank">here</a>.</p>
+	<p>While freedom is good in and of itself, the data suggest that economic freedom is correlated with prosperity in the form of higher Gross Domestic Product (GDP) per capita. As shown below, the data are rather wild; if they convey a message it may not be entirely obvious:</p>
+	<div class='img'>
+	<img src='score%20x%20gdppc.png'>
+	</div>
+	
+	<h2>Transforming the data: Pareto's law</h2>
+	<p>In the scatter plot shown above most of the points seems to cluster at the bottom of the plot. In other words, there are many more poor countries than rich ones. This is in keeping with Pareto's law. The economist Wilfredo Pareto observed in the late nineteenth century that approximately 80% of the wealth accrues to 20% of the population. Furthermore, within that top 20%, 80% of the wealth accrues to the top 20%; and so on. This results in the distribution of wealth being highly skewed. Perhaps GDP per capita obeys a similar law.</p>
+	<p>Data arising from a Pareto distribution can be deskewed by taking the logarithm. Let's do that and see if the data look a little more regular.</p>
+	<div class='img'>
+	<img src='score%20x%20log(gdppc).png'>
+	</div>
+	<p>To my eye the data now look more persuasive in terms of there being a positive corrlation between economic freedom and GDP per capita. However, toward the left hand side of the plot there are a couple of outliers that seem off-message, i.e., low economic freedom, but middling log GDP per capita. This tells us that economic freedom (as measured by the Heritage Foundation) is not the only determiner of GDP per capita. That is not surprising. Indeed, it would be surprising if something as complex as GDP per capita could be entirely or mostly explained by a single variable.</p>
+	
+	<h2>Transforming the data: Rank</h2>
+	<p>The Economic Freedom Index is usually presented in terms of country rank. This is sometimes used to rub it in to the United States which used to be in the top 10 but is no longer. As a citizen of the United States I find this appalling. My feelings aside, does replacing economic freedom scores with ranks change the plot substantially?</p>
+	<div class='img'>
+	<img src='rank%20x%20log(gdppc).png'>
+	</div>
+	<p>Notice that the plot has gone from sloping up to sloping down. This is because rank negatively covaries with economic freedom, i.e., the least free have the highest rank.</p>
+	<p>Replacing scores with ranks involves throwing away information. For example, if three adults have heights of 4 feet, 6 feet, and 8 feet and we transform these to ranks of 3, 2, 1 then we have lost the information that one of the adults is very short and one is very tall. On the other hand, if our measurement instrument is noisy then converting to ranks could conceivably remove more noise than signal. I have not studied the Economic Freedom Index methodology in detail but I would imagine measuring economic freedom is a good deal more noisy than measuring people's heights. It is possible that changing the independent variable from score to rank removes an appreciable amount of noise.</p>
+	
+	<h2>Measuring the trend</h2>
+	<p>We can supplement the impression conveyed by our eyes by measuring the trend formally, that is, by fitting a straight line to the data. Given how diffuse the data are I prefer not to deploy ordinary least squares regression. This procedure is highly susceptible to outliers and extreme values. This is because it fits a line to the data by minimizing the sum of the squares of the deviations from the line. Squaring the deviations overweights large deviations and underweights small ones. This could result in one or a few points exerting an outsize influence on the result of the regression.</p>
+	<p>A better approach in the present case is to use median regression. This fits a line to the data by minimizing the sum of the absolute values of the deviations from the line. Median regression does not overweight or underweight any points. If you decide to use median regression you should know that it is an instance of quantile regression where the quantile is 0.5. In R the relevant package is <i>quantreg</i> while in Stata it is <i>qreg</i>. I am currently using the R quantreg package. Fitting a straight line to the data using median regression we obtain the following:</p>
+	<div class='img'>
+	<img src='rank%20median_regression.png'>
+	</div>
+	<p>The median regression line indicates that GDP per capita declines as economic freedom declines.</p>
+	
+	<h2>Teasing out nonlinearity</h2>
+	<p>It is rarely the case that a straight line tells the whole story about a data set. To explore nonlinearity in the data I fit it using the R <a href='https://stat.ethz.ch/R-manual/R-devel/library/stats/html/loess.html' target="_blank">loess</a> function. The result is shown in the plot below, in which I also replicate the median regression line shown above:</p>
+	<div class='img'>
+	<img src='rank%20loess.png'>
+	</div>
+	<p>Over most of the plot the loess curve stays close to the median regression line. This suggests that for most countries&mdash;aside from the most repressive&mdash;there is a linear relationship between GDP per capita and economic freedom rank.</p>
+	
+	<h2>Bootstrap replications</h2>
+	<p>We have found that GDP per capita tends to positively covary with economic freedom or, what is the same thing, to negatively covary with economic freedom rank (e.g., it is better to be number 1 than number 150). Let's say we are skeptical&mdash;always a good thing for those with a scientific mindset&mdash;and want to see additional evidence. It is necessary to keep in mind that the data we are reviewing are not a sample from a larger population; they are the population. There is not some larger group of nations from which we could take a fresh sample.</p>
+	<p>Given the impossibility of running the "experiment" on a fresh sample, the magic of computation allows us to do the next best thing, and at much lower cost. We can generate as many additional samples as we want through the statistical technique known as the "bootstrap". I will not enter into an exposition of the bootstrap here as there are many expositions available. I recommend "An Introduction to the Bootstrap" by Efron and Tibshirani.</p>
+	<p>With the R language it is very easy to generate bootstrap samples of a set of data and to subject these samples to the statistical analysis in which we are interested. I generated 1000 bootstrap samples of the Heritage Foundation data and measured the slope of the median regression line of GDP per capita as a function of economic freedom rank. The result: All 1000 slopes were negative:</p>
+	<pre>
+Summary of 1000 bootstrap replications:
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  -0.023  -0.019  -0.018  -0.018  -0.017  -0.011 
+	</pre>
+	<p>This gives me confidence that the interaction of economic freedom rank and GDP per capita identified above is not a statistical fluke.</p>
+	<p>One must add the usual caution: That correlation does not imply causation. That being said, it seems eminently reasonable that there would be a cause and effect relationship between economic freedom and prosperity.</p>
+	
+	<h2>Appendix: Omitted countries</h2>
+	<p>The total number of countries in the data set is 186, but 7 countries are excluded from my analysis because of incomplete data:</p>
+	<pre>
+Incomplete cases:
+           name score rank   gdp gdppc
+1          Iraq    NA   NA 544.1 15474
+2 Korea, North    4.9  180  17.4    NA
+3         Libya    NA   NA  92.6 14650
+4 Liechtenstein    NA   NA   5.9 15704
+5       Somalia    NA   NA   5.7    NA
+6         Syria    NA   NA  68.0    NA
+7         Yemen    NA   NA  75.5  2671
+	</pre>
+	<p>Their omission (by necessity, due to lack of data) may bias the results; however, 7 omitted out of 186 is not too worrisome.</p>
+
+	<footer>
+	<p id=copyright>Copyright (C) 2017, John Van Praag</p>
+	</footer>
+</body>
+</html>
