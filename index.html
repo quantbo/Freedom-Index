@@ -67,12 +67,12 @@
 	</div>
 	<p>The median regression line indicates that GDP per capita declines as economic freedom declines.</p>
 	
-	<h2>Teasing out nonlinearity</h2>
+	<h2>Nonlinearity</h2>
 	<p>It is rarely the case that a straight line tells the whole story about a data set. To explore nonlinearity in the data I fit it using the R <a href='https://stat.ethz.ch/R-manual/R-devel/library/stats/html/loess.html' target="_blank">loess</a> function. The result is shown in the plot below, in which I also replicate the median regression line shown above:</p>
 	<div class='img'>
 	<img src='rank%20loess.png'>
 	</div>
-	<p>Over most of the plot the loess curve stays close to the median regression line. This suggests that for most countries&mdash;aside from the most repressive&mdash;there is a linear relationship between GDP per capita and economic freedom rank.</p>
+	<p>Over most of the plot the loess curve stays close to the median regression line. This suggests that for most countries&mdash;aside from the most repressive&mdash;there is (subject to considerable noise) an approximately linear relationship between GDP per capita and economic freedom rank.</p>
 	
 	<h2>Bootstrap replications</h2>
 	<p>We have found that GDP per capita tends to positively covary with economic freedom or, what is the same thing, to negatively covary with economic freedom rank (e.g., it is better to be number 1 than number 150). Let's say we are skeptical&mdash;always a good thing for those with a scientific mindset&mdash;and want to see additional evidence. It is necessary to keep in mind that the data we are reviewing are not a sample from a larger population; they are the population. There is not some larger group of nations from which we could take a fresh sample.</p>
@@ -83,7 +83,7 @@ Summary of 1000 bootstrap replications:
     Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   -0.023  -0.019  -0.018  -0.018  -0.017  -0.011 
 	</pre>
-	<p>This gives me confidence that the interaction of economic freedom rank and GDP per capita identified above is not a statistical fluke.</p>
+	<p>This gives me confidence that the negative slope measured above is not the result of a few outliers or extreme values.</p>
 	<p>One must add the usual caution: Correlation does not imply causation. That being said, it seems eminently reasonable that there would be a cause and effect relationship between economic freedom and prosperity.</p>
 	
 	<h2>Appendix: Omitted countries</h2>
@@ -99,7 +99,6 @@ Incomplete cases:
 6         Syria    NA   NA  68.0    NA
 7         Yemen    NA   NA  75.5  2671
 	</pre>
-	<p>Their omission (by necessity, due to lack of data) may bias the results; however, 7 omitted out of 186 is not too worrisome.</p>
 
 	<footer>
 	<p id=copyright>Copyright (C) 2017, John Van Praag</p>
