@@ -13,9 +13,9 @@
 	
 	<!-- Enable ASCII Math. Copied from
 	http://docs.mathjax.org/en/latest/start.html -->
-	<!-- <script type="text/javascript" async
-	  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-	</script> -->
+	<script type="text/javascript" async
+	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script> 
 
 	<!-- Enable D3. -->
 	<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
@@ -74,17 +74,31 @@
 	</div>
 	<p>Over most of the plot the loess curve stays close to the median regression line. This suggests that for most countries&mdash;aside from the most repressive&mdash;there is (subject to considerable noise) an approximately linear relationship between GDP per capita and economic freedom rank.</p>
 	
-	<h2>Bootstrap replications</h2>
-	<p>We have found that GDP per capita tends to positively covary with economic freedom or, what is the same thing, to negatively covary with economic freedom rank (e.g., it is better to be number 1 than number 150). Let's say we are skeptical&mdash;always a good thing for those with a scientific mindset&mdash;and want to see additional evidence. It is necessary to keep in mind that the data we are reviewing are not a sample from a larger population; they are the population. There is not some larger group of nations from which we could take a fresh sample.</p>
-	<p>Given the impossibility of running the "experiment" on a fresh sample, the magic of computation allows us to do the next best thing, and at much lower cost. We can generate as many additional samples as we want through the statistical technique known as the "bootstrap". I will not enter into an exposition of the bootstrap here as there are many expositions available. I recommend "An Introduction to the Bootstrap" by Efron and Tibshirani.</p>
-	<p>With the R language it is very easy to generate bootstrap samples of a set of data and to subject these samples to the statistical analysis in which we are interested. I generated 1000 bootstrap samples of the Heritage Foundation data and measured the slope of the median regression line of GDP per capita as a function of economic freedom rank. The result: All 1000 slopes were negative:</p>
+	<h2>Goodness of fit</h2>
+	<p>A general framework for measuring goodness of fit is the following:</p>
+	<div class='math'>
+		`GOF = 1 - (sum(f(deviations, "model 1")))/(sum(f(deviations, "model 0")))`
+	</div>
+	<p>What this shows is that the goodness of fit of a model ("model 1") must be measured with respect to a simpler model ("model 0"). The function f transforms each deviation to a positive number by, for example, squaring it or taking its absolute value. In the context of median regression model 0 is the median of the  data and the function f is the absolute value. I apply this measure of goodness of fit to two models: the median regression line, and the loess curve:</p>
+	<pre>
+Goodness of fit
+Median Regression: 0.28
+Loess: 0.32
+	</pre>
+	<p>Both models account for about 30% of the absolute deviations. The loess curve does a bit better because it can adapt to nonlinearities in the data.</p>
+	
+	<h2>Bootstrap test</h2>
+	<p>We have found that GDP per capita tends to positively covary with economic freedom or, what is the same thing, that it tends to negatively covary with economic freedom rank (e.g., it is better to be number 1 than number 150). Is this finding the result of a few outliers or extreme values? In other words, is it real or is it a statistical artifact?</p>
+	<p>Using a statistical technique known as the bootstrap we can generate samples of the existing data in which data points are randomly eliminated. If the observed trend is a statisical artifact, then some of the bootstrap samples should fail to exhibit the trend.</p>
+	<p>I will not enter into an exposition of the bootstrap here as it would take us too far afield and there are many expositions available. I recommend "An Introduction to the Bootstrap" by Efron and Tibshirani.</p>
+	<p>With the R language it is very easy to generate bootstrap samples of a set of data and to subject these samples to any statistical analysis in which we are interested. I generated 1000 bootstrap samples of the Heritage Foundation data and measured the slope of the median regression line of GDP per capita as a function of economic freedom rank. The result: All 1000 slopes were negative:</p>
 	<pre>
 Summary of 1000 bootstrap replications:
     Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   -0.023  -0.019  -0.018  -0.018  -0.017  -0.011 
 	</pre>
-	<p>This gives me confidence that the negative slope measured above is not the result of a few outliers or extreme values.</p>
-	<p>One must add the usual caution: Correlation does not imply causation. That being said, it seems eminently reasonable that there would be a cause and effect relationship between economic freedom and prosperity.</p>
+	<p>This gives me confidence that the negative slope measured above is not a statistical artifact.</p>
+	<p>Can we conclude that economic freedom tends to lead to better economic performmance? Correlation does not imply causation. That being said, it does seem reasonable that a cause and effect relationship could exist between economic freedom and prosperity.</p>
 	
 	<h2>Appendix: Omitted countries</h2>
 	<p>The total number of countries in the data set is 186, but 7 countries are excluded from my analysis because of incomplete data:</p>
