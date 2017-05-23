@@ -62,9 +62,9 @@ pre {
 }
 /*A mathematical expression.*/
 .math {
-	background-color: rgba(0, 0, 255, 0.015);
-	padding-bottom: 0.5em;
-	padding-top: 0.5em;
+	background-color: rgba(0, 0, 128, 0.01);
+	padding-bottom: 0.75em;
+	padding-top: 0.75em;
 	text-indent: 3em;
 }
 

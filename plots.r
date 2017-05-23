@@ -41,24 +41,24 @@ plots = function() {
 
 		#Width and height of graphs in pixels.
 		width = 600; height=480
-		lwd = 4
+		cex = 1.5
 		lty = 2
-		pch = 21
-##		pch = 19
+		lwd = 4
+		pch = 19
 		xlab = paste('Economic freedom', xax)
 
 		#xax x gdppc
 		filename = paste(xax, 'x gdppc.png')
 		png(filename=filename, width=width, height=height)
 		plot(dfr[[xax]], dfr$gdppc, xlab=xlab, ylab='GDP per capita', type='n', bg='red')
-		points(dfr[[xax]], dfr$gdppc, pch=pch, cex=1.5, col=rgb(0, 0.1, 0, 0.9))
+		points(dfr[[xax]], dfr$gdppc, pch=pch, cex=cex, col='black')
 		dev.off()
 
 		#xax x log(gdppc)
 		filename = paste(xax, 'x log(gdppc).png')
 		png(filename=filename, width=width, height=height)
 		plot(dfr[[xax]], log(dfr$gdppc), xlab=xlab, ylab='log(GDP per capita)', type='n', bg='red')
-		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=1.5, col=rgb(0, 0.1, 0, 0.9))
+		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=cex, col=rgb(0, 0.1, 0, 0.9))
 		dev.off()
 
 		#Compute median regression.
@@ -69,7 +69,7 @@ plots = function() {
 		filename = paste(xax, 'median_regression.png')
 		png(filename=filename, width=width, height=height)
 		plot(dfr[[xax]], log(dfr$gdppc), xlab=xlab, ylab='log(GDP per capita)', type='n', bg='red')
-		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=1.5, col=rgb(0, 0.1, 0, 0.9))
+		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=cex, col=rgb(0, 0.1, 0, 0.9))
 		abline(fit, lty=lty, lwd=lwd, col='blue')
 		dev.off()	
 
@@ -80,7 +80,7 @@ plots = function() {
 		filename = paste(xax, 'loess.png')
 		png(filename=filename, width=width, height=height)
 		plot(dfr[[xax]], log(dfr$gdppc), xlab=xlab, ylab='log(GDP per capita)', type='n', bg='red')
-		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=1.5, col=rgb(0, 0.1, 0, 0.9))
+		points(dfr[[xax]], log(dfr$gdppc), pch=pch, cex=cex, col=rgb(0, 0.1, 0, 0.9))
 		abline(fit, lty=lty, lwd=lwd, col='blue')
 		#The x axis must be sorted for the curve to display properly.
 		lines(sort(lfit$x), predict(lfit)[order(lfit$x)], col=rgb(0.66, .05, 0), lty=lty, lwd=lwd)
@@ -102,6 +102,6 @@ plots = function() {
 		message('Summary of ', reps, ' bootstrap replications:')
 		print(round(summary(bt), 3))
 	}
-	plots_xax('rank')
 	plots_xax('score')
+	plots_xax('rank')
 }

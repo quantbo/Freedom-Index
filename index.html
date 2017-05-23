@@ -79,7 +79,8 @@
 	<div class='math'>
 		`GOF = 1 - (sum(f(deviation, "model 1")))/(sum(f(deviation, "model 0")))`
 	</div>
-	<p>What this shows is that the goodness of fit of a model ("model 1") must be measured with respect to a simpler model ("model 0"). The latter is usually the mean or median of they values of the points. The function f transforms each deviation to a positive number by, for example, squaring it or taking its absolute value. In the context of median regression model 0 is the median of the  data and the function f is the absolute value. I apply this measure of goodness of fit to two models: the median regression line, and the loess curve:</p>
+	<!--I enclose y within a span element, below, because otherwise Firefox represents "the y" as "they"!-->
+	<p>The goodness of fit of a model ("model 1") is measured with respect to a simpler model ("model 0"). The latter is usually the mean or median of the <span>y</span> values of the points. The function f transforms each deviation to a positive number by, for example, squaring it or taking its absolute value. In the context of median regression model 0 is the median of the  data and the function f is the absolute value. I apply this measure of goodness of fit to two models: the median regression line, and the loess curve:</p>
 	<pre>
 Goodness of fit
 Median Regression: 0.28
