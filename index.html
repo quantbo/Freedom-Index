@@ -75,11 +75,11 @@
 	<p>Over most of the plot the loess curve stays close to the median regression line. This suggests that for most countries&mdash;aside from the most repressive&mdash;there is (subject to considerable noise) an approximately linear relationship between GDP per capita and economic freedom rank.</p>
 	
 	<h2>Goodness of fit</h2>
-	<p>A general framework for measuring goodness of fit is the following:</p>
+	<p>A general framework for measuring the goodness of fit of a set of points to a line or curve is the following:</p>
 	<div class='math'>
-		`GOF = 1 - (sum(f(deviations, "model 1")))/(sum(f(deviations, "model 0")))`
+		`GOF = 1 - (sum(f(deviation, "model 1")))/(sum(f(deviation, "model 0")))`
 	</div>
-	<p>What this shows is that the goodness of fit of a model ("model 1") must be measured with respect to a simpler model ("model 0"). The function f transforms each deviation to a positive number by, for example, squaring it or taking its absolute value. In the context of median regression model 0 is the median of the  data and the function f is the absolute value. I apply this measure of goodness of fit to two models: the median regression line, and the loess curve:</p>
+	<p>What this shows is that the goodness of fit of a model ("model 1") must be measured with respect to a simpler model ("model 0"). The latter is usually the mean or median of they values of the points. The function f transforms each deviation to a positive number by, for example, squaring it or taking its absolute value. In the context of median regression model 0 is the median of the  data and the function f is the absolute value. I apply this measure of goodness of fit to two models: the median regression line, and the loess curve:</p>
 	<pre>
 Goodness of fit
 Median Regression: 0.28
